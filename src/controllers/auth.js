@@ -1,8 +1,11 @@
 const User = require('../model/User')
 
-const authSecret = require('../.env')
+require('dotenv').config()
+const authSecret = process.env.AUTH_SECRET
+
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt-nodejs')
+
 
 module.exports = {
     async signin (req, res) {

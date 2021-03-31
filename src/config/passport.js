@@ -2,8 +2,8 @@
 //const env = require('dotenv').config({ path: '/full/custom/path/to/your/env/vars' })
 const User = require('../model/User')
 
-const authSecret = require('../.env')
-//const authSecret = env.AUTH_SECRET
+//const authSecret = require('../.env')
+const authSecret = process.env.AUTH_SECRET
 const passport = require('passport')
 const passportJwt = require('passport-jwt')
 const { Strategy, ExtractJwt } = passportJwt
