@@ -1,7 +1,5 @@
 
 
-console.log('Variável de ambiente: ' + process.env.DB_USER)
-
 module.exports = {
     dialect: 'postgres',
     url: process.env.DATABASE_URL,
@@ -9,6 +7,12 @@ module.exports = {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_BANCO,
+    dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+        }
+    },
     define: {
         timestamps: true,
         underscored: true,
