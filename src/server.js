@@ -13,5 +13,6 @@ app.use(routes)
 app.disable('x-powered-by') // Remover da resposta HTTP (header: x-powered-by) a referência de que o Express/Node compõem a lista de tecnologias utilizadas, isso irá afastar rotinas mais simples de varredura e ataques automatizados
 app.listen(process.env.PORT || 3000, () => {
     console.log('Executando...') 
+    console.log('Testar Banco: ' + process.env.DB_BANCO)
 })
 
