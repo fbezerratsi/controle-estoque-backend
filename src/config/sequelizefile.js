@@ -1,6 +1,6 @@
 
 
-//console.log('Variável de ambiente: ' + process.env.DATABASE_URL)
+console.log('Variável de ambiente: ' + process.env.DB_USER)
 
 module.exports = {
     dialect: 'postgres',
