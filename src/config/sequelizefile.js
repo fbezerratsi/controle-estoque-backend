@@ -4,7 +4,6 @@
 
 module.exports = {
     dialect: 'postgres',
-    //type: 'postgres',
     url: process.env.DATABASE_URL,
     host: process.env.DB_HOST,
     username: process.env.DB_USER,
