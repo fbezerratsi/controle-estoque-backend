@@ -16,7 +16,7 @@ routes.post('/signup', UserController.save)
 routes.post('/signin', auth.signin)
 routes.post('/validateToken', auth.validateToken)
 
-routes.all("/usuarios*", passport.passaporte().authenticate())
+//routes.all("/usuarios*", passport.passaporte().authenticate())
 routes.post('/usuarios', UserController.save)
 routes.put('/usuarios/:id', UserController.save)
 routes.get('/usuarios', UserController.get)
