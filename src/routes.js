@@ -55,18 +55,15 @@ routes.get('/usuarios/:id', UserController.getById)
  *      description: The provider managing API
  */
 
+
 /**
- * @swagger
+ * @openapi
  * /providers:
- *      get:
- *          summary: Return the list of all the providers
- *          tags: [Providers]
- *          responses:
- *              201:
- *                  description: The response
- *                  schema:
- *                      $ref-json: './model/Provider'
- * 
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
  */
 routes.get('/providers', ProviderController.get)
 
