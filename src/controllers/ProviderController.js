@@ -8,6 +8,7 @@ module.exports =  {
     async get(req, res) {
         await Provider.findAll()
             .then(provider => res.json(provider))
+            .then(_ => res.status(201))
             .catch(err => res.status(500).send(err))
     },
     async getById(req, res) {
