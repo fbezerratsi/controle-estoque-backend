@@ -1,5 +1,4 @@
 
-//const env = require('dotenv').config({ path: '/full/custom/path/to/your/env/vars' })
 const User = require('../model/User')
 
 //const authSecret = require('../.env')

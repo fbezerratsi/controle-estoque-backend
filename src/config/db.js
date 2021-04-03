@@ -3,10 +3,11 @@ const config = require('./sequelizefile.js')
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(config)
-//console.log(url)
 
 const User = require('../model/User')
 User.init(sequelize)
+const Provider = require('../model/Provider')
+Provider.init(sequelize)
 
 
 //Address.init(connection)
