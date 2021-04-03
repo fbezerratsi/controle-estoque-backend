@@ -23,7 +23,7 @@ const options = {
                 url: "http://localhost:3000",
             }
         ],
-        schemes: ["http", "https"]
+        schemes: "https"
     },
     apis: ["./src/*.js"]
 }
