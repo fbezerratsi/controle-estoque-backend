@@ -69,7 +69,7 @@ routes.get('/usuarios/:id', UserController.getById)
  *                          schema:
  *                              type: array
  *                              items:
- *                                  $ref-json: '#/providers'
+ *                                  $ref-json: '#/components/schema/Provider'
  * 
  */
 routes.get('/providers', ProviderController.get)
@@ -93,7 +93,7 @@ routes.get('/providers', ProviderController.get)
  *                  contens:
  *                      application/json:
  *                          schema:
- *                              $ref-json: '/providers'
+ *                              $ref-json: '#/components/schema/Provider'
  *              404:
  *                  description: The provider was not found
  */
