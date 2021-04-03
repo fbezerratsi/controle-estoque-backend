@@ -21,7 +21,9 @@
     "passport-jwt": "^4.0.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.5.0"
+    "sequelize": "^6.5.0",
+    "swagger-jsdoc": "6.0.0",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "heroku": "^7.51.0",

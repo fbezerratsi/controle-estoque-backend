@@ -23,10 +23,85 @@ routes.put('/usuarios/:id', UserController.save)
 routes.get('/usuarios', UserController.get)
 routes.get('/usuarios/:id', UserController.getById)
 
-routes.post('/provider', ProviderController.save)
-routes.put('/provider/:uuid', ProviderController.save)
-routes.get('/provider', ProviderController.get)
-routes.get('/provider/:uuid', ProviderController.getById)
+/**
+ * @swagger
+ * components:
+ *      schemas:
+ *          Book:
+ *              type: object
+ *              required:
+ *                  - name
+ *                  - cnpj
+ *              properties:
+ *                  uuid:
+ *                      type: uuid
+ *                      description: The auto-generated uuid of the Provider
+ *                  name:
+ *                      type: string(70)
+ *                      description: The provider name
+ *                  cnpj:
+ *                      type: string(14)
+ *                      description: The provider cnpj
+ *              example:
+ *                  uuid: dbf5cf74-808f-4aa7-b926-e9ca47aa0c94
+ *                  name: Medical master MEI
+ *                  cnpj: 93756364000190
+ */
+
+/**
+ * @swagger
+ * tags:
+ *      name: Providers
+ *      description: The provider managing API
+ */
+
+/**
+ * @swagger
+ * /providers:
+ *      get:
+ *          summary: Return the list of all the providers
+ *          tags: [Providers]
+ *          responses:
+ *              201:
+ *                  description: The list of the providers
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref-json: '#/providers'
+ * 
+ */
+routes.get('/providers', ProviderController.get)
+
+/**
+ * @swagger
+ * /providers/{uuid}:
+ *      get:
+ *          sumary: Get the provider by uuid
+ *          tags: [Providers]
+ *          parameters:
+ *              - in: path
+ *                name: uuid
+ *                schema:
+ *                  type: string
+ *                required: true
+ *                description: The provider uuid
+ *          responses:
+ *              200:
+ *                  description: The provider description by uuid
+ *                  contens:
+ *                      application/json:
+ *                          schema:
+ *                              $ref-json: '/providers'
+ *              404:
+ *                  description: The provider was not found
+ */
+routes.get('/providers/:uuid', ProviderController.getById)
+
+routes.post('/providers', ProviderController.save)
+routes.put('/providers/:uuid', ProviderController.save)
+
 
 //routes.get('/report', ReportController.show)
 
