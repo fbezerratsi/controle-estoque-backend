@@ -69,7 +69,7 @@ routes.get('/usuarios/:id', UserController.getById)
  *                          schema:
  *                              type: array
  *                              items:
- *                                  $ref-json: '#/components/schema/Provider'
+ *                                  $ref: '#/components/schema/Provider'
  * 
  */
 routes.get('/providers', ProviderController.get)
