@@ -18,14 +18,11 @@ const options = {
             version: "1.0.0",
             description: "A simple Express Library API"
         },
-        //scheme: ["https"]
-        servers: [{ url: "https://localhost:3000"}]
-        /* servers: [
+        servers: [
             {
-                url: "https://localhost:3000",
-                url: "http://localhost:3000"
+                url: "https://localhost:3000"
             }
-        ] */
+        ]
     },
     apis: ["./src/*.js"],
     
