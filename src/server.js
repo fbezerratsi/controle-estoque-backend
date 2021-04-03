@@ -20,7 +20,7 @@ const options = {
         },
         servers: [
             {
-                url: "https://localhost:3000"
+                url: "https://controle-estoque-backend.herokuapp.com"
             },
             {url: "http://localhost:3000"}
         ]
