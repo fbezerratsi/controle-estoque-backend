@@ -50,6 +50,9 @@ routes.get('/usuarios/:id', UserController.getById)
 
 /**
  * @swagger
+ * schemes:
+ *  - https
+ *  - http
  * tags:
  *      name: Providers
  *      description: The provider managing API

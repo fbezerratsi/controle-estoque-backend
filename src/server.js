@@ -21,9 +21,9 @@ const options = {
         servers: [
             {
                 url: "http://localhost:3000",
-                basePath: "/"
             }
-        ]
+        ],
+        schemes: ["http", "https"]
     },
     apis: ["./src/*.js"]
 }
