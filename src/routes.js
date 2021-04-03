@@ -27,7 +27,7 @@ routes.get('/usuarios/:id', UserController.getById)
  * @swagger
  * components:
  *      schemas:
- *          Book:
+ *          Provider:
  *              type: object
  *              required:
  *                  - name
@@ -65,7 +65,9 @@ routes.get('/usuarios/:id', UserController.getById)
  *              201:
  *                  description: The response
  *                  schema:
- *                      $ref-json: './model/Provider'
+ *                      type: object
+ *                      $ref-json: '#/components/schemas/Provider'
+ *
  * 
  */
 
