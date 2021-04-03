@@ -12,6 +12,7 @@ module.exports =  {
     },
     async getById(req, res) {
         const uuid = req.params.uuid
+        
         await Provider.findOne({ where: { uuid } })
             .then(provider => res.json(provider))
             .catch(err => res.status(500).send(err))
