@@ -31,9 +31,8 @@ routes.get('/usuarios/:id', UserController.getById)
  *              type: object
  *              required:
  *                  - name
- *                  - cnpj
  *              properties:
- *                  uuid:
+ *                  provider_uuid:
  *                      type: uuid
  *                      description: The auto-generated uuid of the Provider
  *                  name:
@@ -43,16 +42,12 @@ routes.get('/usuarios/:id', UserController.getById)
  *                      type: string(14)
  *                      description: The provider cnpj
  *              example:
- *                  uuid: dbf5cf74-808f-4aa7-b926-e9ca47aa0c94
- *                  name: Medical master MEI
- *                  cnpj: 93756364000190
+ *                  name: "Medical master MEI"
+ *                  cnpj: "93756364000190"
  */
 
 /**
  * @swagger
- * schemes:
- *  - https
- *  - http
  * tags:
  *      name: Providers
  *      description: The provider managing API
@@ -78,13 +73,13 @@ routes.get('/providers', ProviderController.get)
 
 /**
  * @swagger
- * /providers/{uuid}:
+ * /providers/{provider_uuid}:
  *      get:
  *          sumary: Get the provider by uuid
  *          tags: [Providers]
  *          parameters:
  *              - in: path
- *                name: uuid
+ *                name: provider_uuid
  *                schema:
  *                  type: string
  *                required: true
@@ -99,10 +94,38 @@ routes.get('/providers', ProviderController.get)
  *              404:
  *                  description: The provider was not found
  */
-routes.get('/providers/:uuid', ProviderController.getById)
+routes.get('/providers/:provider_uuid', ProviderController.getById)
 
+/**
+ * @swagger
+ * /providers:
+ *  post:
+ *      sumary: Create a new provider
+ *      tags: [Providers]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Provider'
+ *      responses:
+ *          201:
+ *              description: The provider was successfully created
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Provider'
+ *          400:
+ *              description: Registering a supplier when not providing the required
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Provider'
+ *          500:
+ *              description: Some server
+ */
 routes.post('/providers', ProviderController.save)
-routes.put('/providers/:uuid', ProviderController.save)
+routes.put('/providers/:provider_uuid', ProviderController.save)
 
 
 //routes.get('/report', ReportController.show)
