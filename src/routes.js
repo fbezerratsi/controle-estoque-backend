@@ -125,6 +125,40 @@ routes.get('/providers/:provider_uuid', ProviderController.getById)
  *              description: Some server
  */
 routes.post('/providers', ProviderController.save)
+
+/**
+ * @swagger
+ * /providers/{provider_uuid}:
+ *  put:
+ *      summary: Update the provider by the provider_uuid
+ *      tags: [Providers]
+ *      parameters:
+ *        - in: path
+ *          name: provider_uuid
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: The provider uuid
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/Provider'
+ *      responses:
+ *        200:
+ *          description: The provider was updated
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Provider'
+ *        404:
+ *          description: The provider was not found
+ *        500:
+ *          description: Some error happened
+ *      
+ *          
+ */
 routes.put('/providers/:provider_uuid', ProviderController.save)
 
 
