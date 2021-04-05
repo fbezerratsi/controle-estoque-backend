@@ -18,10 +18,58 @@ routes.post('/signin', auth.signin)
 routes.post('/validateToken', auth.validateToken)
 
 //routes.all("/usuarios*", passport.passaporte().authenticate())
-routes.post('/usuarios', UserController.save)
-routes.put('/usuarios/:id', UserController.save)
-routes.get('/usuarios', UserController.get)
-routes.get('/usuarios/:id', UserController.getById)
+routes.post('/users', UserController.save)
+routes.put('/users/:id', UserController.save)
+routes.get('/users', UserController.get)
+routes.get('/users/:id', UserController.getById)
+
+routes.get('/providers', ProviderController.get)
+routes.get('/providers/:uuid', ProviderController.getById)
+routes.post('/providers', ProviderController.save)
+routes.put('/providers/:uuid', ProviderController.save)
+//routes.get('/report', ReportController.show)
+module.exports = routes
+
+/** ############################################################################################# */
+/**
+ * @swagger
+ * components:
+ *      schemas:
+ *          Users:
+ *              type: object
+ *              required:
+ *                  - name
+ *                  - cpf
+ *                  - email
+ *                  - password
+ *                  - admin
+ *              properties:
+ *                  id:
+ *                      type: uuid
+ *                      description: The auto-generated uuid of the Users
+ *                  name:
+ *                      type: string
+ *                      description: The user name
+ *                  cpf:
+ *                      type: string
+ *                      description: The user cpf
+ *                  email:
+ *                      type: string
+ *                      description: The user email
+ *                  password:
+ *                      type: string
+ *                      description: The user password
+ *                  admin:
+ *                      type: boolean
+ *                      description: The user admin
+ *              example:
+ *                  name: "Felipe Bezerra dos Santos"
+ *                  cpf: "00000000000"
+ *                  email: "felipe@gmail.com"
+ *                  password: "12345"
+ *                  admin: true
+ */
+/** ############################################################################################# */
 
 /**
  * @swagger
@@ -32,7 +80,7 @@ routes.get('/usuarios/:id', UserController.getById)
  *              required:
  *                  - name
  *              properties:
- *                  provider_uuid:
+ *                  uuid:
  *                      type: uuid
  *                      description: The auto-generated uuid of the Provider
  *                  name:
@@ -46,6 +94,12 @@ routes.get('/usuarios/:id', UserController.getById)
  *                  cnpj: "93756364000190"
  */
 
+/**
+ * @swagger
+ * tags:
+ *      name: Users
+ *      description: The user managing API
+ */
 /**
  * @swagger
  * tags:
@@ -69,17 +123,15 @@ routes.get('/usuarios/:id', UserController.getById)
  * 
  */
 
-routes.get('/providers', ProviderController.get)
-
 /**
  * @swagger
- * /providers/{provider_uuid}:
+ * /providers/{uuid}:
  *      get:
  *          sumary: Get the provider by uuid
  *          tags: [Providers]
  *          parameters:
  *              - in: path
- *                name: provider_uuid
+ *                name: uuid
  *                schema:
  *                  type: string
  *                required: true
@@ -94,7 +146,7 @@ routes.get('/providers', ProviderController.get)
  *              404:
  *                  description: The provider was not found
  */
-routes.get('/providers/:provider_uuid', ProviderController.getById)
+
 
 /**
  * @swagger
@@ -124,17 +176,16 @@ routes.get('/providers/:provider_uuid', ProviderController.getById)
  *          500:
  *              description: Some server
  */
-routes.post('/providers', ProviderController.save)
 
 /**
  * @swagger
- * /providers/{provider_uuid}:
+ * /providers/{uuid}:
  *  put:
- *      summary: Update the provider by the provider_uuid
+ *      summary: Update the provider by the uuid
  *      tags: [Providers]
  *      parameters:
  *        - in: path
- *          name: provider_uuid
+ *          name: uuid
  *          schema:
  *              type: string
  *          required: true
@@ -159,9 +210,3 @@ routes.post('/providers', ProviderController.save)
  *      
  *          
  */
-routes.put('/providers/:provider_uuid', ProviderController.save)
-
-
-//routes.get('/report', ReportController.show)
-
-module.exports = routes

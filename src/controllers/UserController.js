@@ -29,7 +29,7 @@ module.exports =  {
         if (req.params.id) user.id = req.params.id
         
         try {
-            existsOrErro(user.nome, "Nome não informado")
+            existsOrErro(user.name, "Nome não informado")
             existsOrErro(user.cpf, "CPF não informado")
             existsOrErro(user.email, "E-mail não informado")
             existsOrErro(user.password, "Senha não informado")
@@ -54,7 +54,7 @@ module.exports =  {
                 .catch(err => res.status(500).send(err))
         } else { // Inserir um usuário no banco
             await User.create(user)
-                .then(_ => res.status(204).send())
+                .then(u => res.status(201).json({u}))
                 .catch(err => res.status(500).send(err))
         }
 

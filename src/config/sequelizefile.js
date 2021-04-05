@@ -6,6 +6,7 @@ const us = process.env.DB_USERNAME
 const ps = process.env.DB_PASSWORD
 module.exports = {
     dialect: 'postgres',
+    //logging: false,
     host: h,
     database: db,
     username: us,
