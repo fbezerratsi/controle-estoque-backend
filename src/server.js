@@ -25,7 +25,7 @@ const options = {
             {url: "http://localhost:3000"}
         ]
     },
-    apis: ["./src/*.js"],
+    apis: ['./docs/*.yaml'],
     
 }
 

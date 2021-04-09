@@ -55,6 +55,4 @@ module.exports = {
 
         return res.send(false)
     }
-
-    //return { signin, validateToken }
 }

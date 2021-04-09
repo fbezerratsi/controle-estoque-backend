@@ -1,0 +1,77 @@
+/providers:
+    post:
+      sumary: Create a new provider
+      tags: [Providers]
+      requestBody:
+          required: true
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/Provider'
+      responses:
+          201:
+              description: The provider was successfully created
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/Provider'
+          400:
+              description: Registering a supplier when not providing the required
+              content:
+                  application/json:
+                      schema:
+                          $ref: '#/components/schemas/Provider'
+          500:
+              description: Some server
+
+/providers/{uuid}:
+    get:
+        sumary: Get the provider by uuid
+        tags: [Providers]
+        parameters:
+              - in: path
+                name: uuid
+                schema:
+                  type: string
+                required: true
+                description: The provider uuid
+          responses:
+              200:
+                  description: The provider description by uuid
+                  contens:
+                      application/json:
+                          schema:
+                              $ref-json: './model/Provider'
+              404:
+                  description: The provider was not found
+
+
+/providers/{uuid}:
+  put:
+      summary: Update the provider by the uuid
+      tags: [Providers]
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+              type: string
+          required: true
+          description: The provider uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                  $ref: '#/components/schemas/Provider'
+      responses:
+        200:
+          description: The provider was updated
+          content:
+              application/json:
+                  schema:
+                      $ref: '#/components/schemas/Provider'
+        404:
+          description: The provider was not found
+        500:
+          description: Some error happened
+

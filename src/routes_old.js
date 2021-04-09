@@ -9,10 +9,6 @@ const passport = require('./config/passport')
 
 const routes = express.Router()
 
-routes.get('/', (req, res) => {
-    return res.json({ hello: 'World' })
-})
-
 routes.post('/signup', UserController.save)
 routes.post('/signin', auth.signin)
 routes.post('/validateToken', auth.validateToken)
@@ -177,36 +173,3 @@ module.exports = routes
  *              description: Some server
  */
 
-/**
- * @swagger
- * /providers/{uuid}:
- *  put:
- *      summary: Update the provider by the uuid
- *      tags: [Providers]
- *      parameters:
- *        - in: path
- *          name: uuid
- *          schema:
- *              type: string
- *          required: true
- *          description: The provider uuid
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *              schema:
- *                  $ref: '#/components/schemas/Provider'
- *      responses:
- *        200:
- *          description: The provider was updated
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Provider'
- *        404:
- *          description: The provider was not found
- *        500:
- *          description: Some error happened
- *      
- *          
- */
