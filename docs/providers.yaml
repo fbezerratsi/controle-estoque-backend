@@ -88,15 +88,15 @@ providers/{provider_id}:
 
 /providers/{provider_id}:
   put:
-      summary: Update the provider by the uuid
+      summary: Update the provider by the provider_id
       tags: [Providers]
       parameters:
         - in: path
-          name: uuid
+          name: provider_id
           schema:
               type: string
           required: true
-          description: The provider uuid
+          description: The provider provider_id
       requestBody:
         required: true
         content:
