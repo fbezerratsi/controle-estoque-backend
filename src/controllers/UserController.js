@@ -12,7 +12,7 @@ module.exports =  {
 
     async getById(req, res) {
 
-        await User.findOne({ where: { id: req.params.id } })
+        await User.findOne({ where: { user_id: req.params.user_id } })
             .then(user => res.json(user))
             .catch(err => res.status(500).send(err))
 
@@ -26,7 +26,7 @@ module.exports =  {
 
         const user = { ...req.body }
 
-        if (req.params.id) user.id = req.params.id
+        if (req.params.user_id) user.user_id = req.params.user_id
         
         try {
             existsOrErro(user.name, "Nome não informado")
@@ -37,7 +37,7 @@ module.exports =  {
             equalsOrErro(user.password, user.confirmPassword, "Senhas não conferem")
 
             const userFromDB = await User.findOne({ where: { cpf: user.cpf } })
-            if (!user.id) {
+            if (!user.user_id) {
                 notExistsOrErro(userFromDB, "Usuário já cadastrado")
             }
             
@@ -48,8 +48,8 @@ module.exports =  {
         user.password = encryptPassword(req.body.password)
         delete user.confirmPassword
 
-        if (user.id) { // Atualizar um usuário no banco
-            await User.update(user, { where: { id: user.id } })
+        if (user.user_id) { // Atualizar um usuário no banco
+            await User.update(user, { where: { user_id: user.user_id } })
                 .then(_ => res.status(204).send())
                 .catch(err => res.status(500).send(err))
         } else { // Inserir um usuário no banco

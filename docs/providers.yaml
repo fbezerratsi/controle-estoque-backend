@@ -1,4 +1,30 @@
-/providers:
+
+components:
+     schemas:
+         Provider:
+             type: object
+             required:
+                 - name
+             properties:
+                 uuid:
+                     type: uuid
+                     description: The auto-generated uuid of the Provider
+                 name:
+                     type: string(70)
+                     description: The provider name
+                 cnpj:
+                     type: string(14)
+                     description: The provider cnpj
+             example:
+                 name: "Medical master MEI"
+                 cnpj: "93756364000190"
+
+
+tags:
+     name: Providers
+     description: The provider managing API
+
+providers:
     post:
       sumary: Create a new provider
       tags: [Providers]
@@ -24,29 +50,43 @@
           500:
               description: Some server
 
-/providers/{uuid}:
+providers/{provider_id}:
     get:
         sumary: Get the provider by uuid
         tags: [Providers]
         parameters:
               - in: path
-                name: uuid
+                name: provider_id
                 schema:
                   type: string
                 required: true
-                description: The provider uuid
-          responses:
-              200:
-                  description: The provider description by uuid
-                  contens:
-                      application/json:
-                          schema:
-                              $ref-json: './model/Provider'
-              404:
-                  description: The provider was not found
+                description: The provider provider_id
+        responses:
+                200:
+                    description: The provider description by uuid
+                    contens:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Provider'
+                404:
+                    description: The provider was not found
 
+/providers:
+    get:
+        sumary: Get the provider by provider_id
+        tags: [Providers]
+        
+        responses:
+                201:
+                    description: The provider description by provider_id
+                    contens:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Provider'
+                404:
+                    description: The provider was not found
 
-/providers/{uuid}:
+/providers/{provider_id}:
   put:
       summary: Update the provider by the uuid
       tags: [Providers]
