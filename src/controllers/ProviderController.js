@@ -12,9 +12,9 @@ module.exports =  {
             .catch(err => res.status(500).send(err))
     },
     async getById(req, res) {
-        const uuid = req.params.uuid
+        const provider_id = req.params.provider_id
         
-        await Provider.findOne({ where: { uuid } })
+        await Provider.findOne({ where: { provider_id } })
             .then(provider => res.json(provider))
             .catch(err => res.status(500).send(err))
     },
@@ -24,7 +24,7 @@ module.exports =  {
         provider.name = provider.name.trim()
         provider.cnpj = provider.cnpj.trim()
         
-        if (req.params.uuid) provider.uuid = req.params.uuid
+        if (req.params.provider_id) provider.provider_id = req.params.provider_id
         
         
         try {
@@ -44,7 +44,7 @@ module.exports =  {
                         ] 
                     }
                 })
-            if (!provider.uuid) {
+            if (!provider.provider_id) {
                 console.log('Entrou')
                 notExistsOrErro(ProviderFromDB, {"code": 412, "message": "supplier already registered"})
             }
@@ -54,8 +54,8 @@ module.exports =  {
         }
 
         
-        if (provider.uuid) { // Atualizar um usuário no banco
-            await Provider.update(provider, { where: { uuid: provider.uuid } })
+        if (provider.provider_id) { // Atualizar um usuário no banco
+            await Provider.update(provider, { where: { provider_id: provider.provider_id } })
                 .then(prov => res.status(204).json({prov}))
                 .catch(err => res.status(500).send(err))
         } else { // Inserir um usuário no banco

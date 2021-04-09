@@ -18,7 +18,7 @@ module.exports = {
         const strategy = new Strategy(params, (payload, done) => {
             User.findOne({
                 where: {
-                    id: payload.id
+                    user_id: payload.user_id
                 }
             }).then(user => done(null, user ? { ...payload } : false )).catch(err => done(err, false))
         })

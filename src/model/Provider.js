@@ -4,7 +4,7 @@ const { Model, DataTypes } = require('sequelize')
 class Provider extends Model {
     static init(connection) {
         super.init({
-            uuid: {
+            provider_id: {
                 primaryKey: true,
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
