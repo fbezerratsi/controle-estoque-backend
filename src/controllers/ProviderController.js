@@ -8,15 +8,18 @@ module.exports =  {
     async get(req, res) {
         await Provider.findAll()
             .then(provider => res.json(provider))
-            .then(_ => res.status(201))
             .catch(err => res.status(500).send(err))
     },
     async getById(req, res) {
         const provider_id = req.params.provider_id
         
         await Provider.findOne({ where: { provider_id } })
-            .then(provider => res.json(provider))
+            .then(provider => {
+                if (!provider) res.status(404)
+                res.json(provider)
+            })
             .catch(err => res.status(500).send(err))
+    
     },
     async save(req, res) {
         

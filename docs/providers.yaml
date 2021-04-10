@@ -1,117 +1,114 @@
 
 components:
-     schemas:
-         Provider:
-             type: object
-             required:
-                 - name
-             properties:
-                 uuid:
-                     type: uuid
-                     description: The auto-generated uuid of the Provider
-                 name:
-                     type: string(70)
-                     description: The provider name
-                 cnpj:
-                     type: string(14)
-                     description: The provider cnpj
-             example:
-                 name: "Medical master MEI"
-                 cnpj: "93756364000190"
-
+  schemas:
+    Provider:
+      type: object
+      required:
+        - name
+      properties:
+        provider_id:
+          type: uuid
+          description: The auto-generated id of the provider
+        name:
+          type: string
+          description: The provider name
+        cnpj:
+          type: string
+          description: The provider cnpj
+      example:
+        name: "Medical Master MEI"
+        cnpj: "00000000000000"
 
 tags:
-     name: Providers
-     description: The provider managing API
-
-providers:
-    post:
-      sumary: Create a new provider
-      tags: [Providers]
-      requestBody:
-          required: true
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/Provider'
-      responses:
-          201:
-              description: The provider was successfully created
-              content:
-                  application/json:
-                      schema:
-                          $ref: '#/components/schemas/Provider'
-          400:
-              description: Registering a supplier when not providing the required
-              content:
-                  application/json:
-                      schema:
-                          $ref: '#/components/schemas/Provider'
-          500:
-              description: Some server
-
-providers/{provider_id}:
-    get:
-        sumary: Get the provider by uuid
-        tags: [Providers]
-        parameters:
-              - in: path
-                name: provider_id
-                schema:
-                  type: string
-                required: true
-                description: The provider provider_id
-        responses:
-                200:
-                    description: The provider description by uuid
-                    contens:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Provider'
-                404:
-                    description: The provider was not found
+  name: Provider
+  description: The provider managing API
 
 /providers:
-    get:
-        sumary: Get the provider by provider_id
-        tags: [Providers]
-        
-        responses:
-                201:
-                    description: The provider description by provider_id
-                    contens:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Provider'
-                404:
-                    description: The provider was not found
-
-/providers/{provider_id}:
-  put:
-      summary: Update the provider by the provider_id
-      tags: [Providers]
-      parameters:
-        - in: path
-          name: provider_id
-          schema:
-              type: string
-          required: true
-          description: The provider provider_id
-      requestBody:
-        required: true
+  get:
+    summary: Returns the list of all the provider
+    tags: [Provider]
+    responses:
+      200:
+        description: The list of the provider
         content:
           application/json:
-              schema:
-                  $ref: '#/components/schemas/Provider'
-      responses:
-        200:
-          description: The provider was updated
-          content:
-              application/json:
-                  schema:
-                      $ref: '#/components/schemas/Provider'
-        404:
-          description: The provider was not found
-        500:
-          description: Some error happened
-
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Provider'
+  post:
+    summary: Create a new provider
+    tags: [Provider]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Provider'
+    responses:
+      201:
+        description: The provider was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Provider'
+      410:
+        description: provider field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      413:
+        description: cnpj field is not valid data
+      414:
+        description: cnpj field must be 14 characters
+      500:
+        description: Some server
+              
+/providers/{provider_id}:
+  get:
+    summary: Get the provider by id
+    tags: [Provider]
+    parameters:
+      - in: path
+        name: provider_id
+        schema:
+          type: string
+        required: true
+        description: The provider id
+    responses:
+      200:
+        description: The provider description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Provider'
+      404:
+        description: The provider was not found
+  put:
+    summary: Update the provider by id
+    tags: [Provider]
+    parameters:
+      - in: path
+        name: provider_id
+        schema:
+          type: string
+        required: true
+        description: The provider id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/Provider'
+    responses:
+      204:
+        description: The provider was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Provider'
+      404:
+        description: The provider was not found
+      500:
+        description: Some error happened
