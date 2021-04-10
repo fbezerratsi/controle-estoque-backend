@@ -20,9 +20,9 @@ const options = {
         },
         servers: [
             {
-                url: "https://controle-estoque-backend.herokuapp.com"
+                url: "https://controle-estoque-backend.herokuapp.com/api/v1"
             },
-            {url: "http://localhost:3000"}
+            {url: "http://localhost:3000/api/v1"}
         ]
     },
     apis: ['./docs/*.yaml'],

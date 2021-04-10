@@ -8,6 +8,8 @@ const User = require('../model/User')
 User.init(sequelize)
 const Provider = require('../model/Provider')
 Provider.init(sequelize)
+const Shelf = require('../model/Shelf')
+Shelf.init(sequelize)
 
 
 //Address.init(connection)

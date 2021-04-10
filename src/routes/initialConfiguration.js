@@ -2,7 +2,7 @@ const UserController = require('../controllers/UserController')
 const AuthController = require('../controllers/AuthController')
 
 module.exports = routes => {
-    routes.post('/signup', UserController.save)
-    routes.post('/signin', AuthController.signin)
-    routes.post('/validateToken', AuthController.validateToken)
+    routes.post(process.env.START_OF_ROUTER + '/signup', UserController.save)
+    routes.post(process.env.START_OF_ROUTER + '/signin', AuthController.signin)
+    routes.post(process.env.START_OF_ROUTER + '/validateToken', AuthController.validateToken)
 }

@@ -1,9 +1,9 @@
 const UserController = require('../controllers/UserController')
 
 module.exports = routes => {
-    routes.post('/users', UserController.save)
-    routes.put('/users/:id', UserController.save)
-    routes.get('/users', UserController.get)
-    routes.get('/users/:id', UserController.getById)
+    routes.post(process.env.START_OF_ROUTER + '/users', UserController.save)
+    routes.put(process.env.START_OF_ROUTER + '/users/:id', UserController.save)
+    routes.get(process.env.START_OF_ROUTER + '/users', UserController.get)
+    routes.get(process.env.START_OF_ROUTER + '/users/:id', UserController.getById)
 }
 

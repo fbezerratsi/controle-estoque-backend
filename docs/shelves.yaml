@@ -1,60 +1,55 @@
 
 components:
   schemas:
-    Provider:
+    Shelf:
       type: object
       required:
         - name
       properties:
-        provider_id:
+        shelf_id:
           type: uuid
-          description: The auto-generated id of the provider
+          description: The auto-generated id of the shelf
         name:
           type: string
-          description: The provider name
-        cnpj:
-          type: string
-          description: The provider cnpj
+          description: The shelf name
       example:
-        name: "Medical Master MEI"
-        cnpj: "00000000000000"
-
+        name: "A1"
 
 tags:
-  name: Provider
-  description: The provider managing API
+  name: Shelf
+  description: The shelf managing API
 
-/providers:
+/shelves:
   get:
-    summary: Returns the list of all the provider
-    tags: [Provider]
+    summary: Returns the list of all the shelf
+    tags: [Shelf]
     responses:
       200:
-        description: The list of the provider
+        description: The list of the shelf
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Provider'
+                $ref: '#/components/schemas/Shelf'
   post:
-    summary: Create a new provider
-    tags: [Provider]
+    summary: Create a new shelf
+    tags: [Shelf]
     requestBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Provider'
+            $ref: '#/components/schemas/Shelf'
     responses:
       201:
-        description: The provider was successfully created
+        description: The shelf was successfully created
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Provider'
+              $ref: '#/components/schemas/Shelf'
       410:
-        description: provider field is mandatory
+        description: shelf field is mandatory
       411:
         description: supplier field must have a maximum of 70 characters
       412:
@@ -66,50 +61,50 @@ tags:
       500:
         description: Some server
               
-/providers/{provider_id}:
+/shelves/{shelf_id}:
   get:
-    summary: Get the provider by id
-    tags: [Provider]
+    summary: Get the shelf by id
+    tags: [Shelf]
     parameters:
       - in: path
-        name: provider_id
+        name: shelf_id
         schema:
           type: string
         required: true
-        description: The provider id
+        description: The shelf id
     responses:
       200:
-        description: The provider description by id
+        description: The shelf description by id
         contens:
           application/json:
             schema:
-              $ref: '#/components/schemas/Provider'
+              $ref: '#/components/schemas/Shelf'
       404:
-        description: The provider was not found
+        description: The shelf was not found
   put:
-    summary: Update the provider by id
-    tags: [Provider]
+    summary: Update the shelf by id
+    tags: [Shelf]
     parameters:
       - in: path
-        name: provider_id
+        name: shelf_id
         schema:
           type: string
         required: true
-        description: The provider id
+        description: The shelf id
     requestBody:
       required: true
       content:
         application/json:
           schema:
-              $ref: '#/components/schemas/Provider'
+              $ref: '#/components/schemas/Shelf'
     responses:
       204:
-        description: The provider was update
+        description: The shelf was update
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/Provider'
+                $ref: '#/components/schemas/Shelf'
       404:
-        description: The provider was not found
+        description: The shelf was not found
       500:
         description: Some error happened

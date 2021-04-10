@@ -1,6 +1,6 @@
 const User = require('../model/User')
 const bcrypt = require('bcrypt-nodejs')
-const { existsOrErro, notExistsOrErro, equalsOrErro } = require('../model/validacaoUser');
+const { existsOrErro, notExistsOrErro, equalsOrErro } = require('../model/validation');
 //const { delete } = require('../routes');
 
 const encryptPassword = password => {
