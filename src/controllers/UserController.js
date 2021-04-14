@@ -1,7 +1,7 @@
 const User = require('../model/User')
+const Address = require('../model/Address')
 const bcrypt = require('bcrypt-nodejs')
 const { existsOrErro, notExistsOrErro, equalsOrErro } = require('../model/validation');
-//const { delete } = require('../routes');
 
 const encryptPassword = password => {
     const salt = bcrypt.genSaltSync(10);
@@ -12,20 +12,57 @@ module.exports =  {
 
     async getById(req, res) {
 
-        await User.findOne({ where: { user_id: req.params.user_id } })
+        const user_id  = req.params.user_id
+        console.log(user_id)
+        const user = await User.findByPk(user_id, {
+            include: { association: 'address' }
+        })
             .then(user => res.json(user))
             .catch(err => res.status(500).send(err))
 
     },
     async get(req, res) {
-        await User.findAll()
+        
+        await User.findAll({
+            include: { association: 'address' }
+        })
             .then(users => res.json(users))
             .catch(err => res.status(500).send(err))
     },
     async save(req, res) {
 
         const user = { ...req.body }
+        
+        street = user.address.street.trim()
+        number = user.address.number.trim()
+        district = user.address.district.trim()
+        zipcode = user.address.zipcode.trim()
+        state = user.address.state.trim()
+        city = user.address.city.trim()
 
+        try {
+            existsOrErro(street, {"code": 410, "message": "street field is mandatory"})
+            existsOrErro(number, {"code": 410, "message": "number field is mandatory"})
+            existsOrErro(district, {"code": 410, "message": "district field is mandatory"})
+            existsOrErro(zipcode, {"code": 410, "message": "zipcode field is mandatory"})
+            existsOrErro(state, {"code": 410, "message": "state field is mandatory"})
+            existsOrErro(city, {"code": 410, "message": "city field is mandatory"})
+        } catch(msg) {
+            return {
+                "code": 400,
+                "msg": msg
+            }
+        }
+        
+        await Address.create({ street, number, district, zipcode, state, city })
+            .then(a => {
+                user.address_id = a.address_id
+            })
+
+
+        //res.json(user)
+        
+        
         if (req.params.user_id) user.user_id = req.params.user_id
         
         try {
@@ -54,7 +91,7 @@ module.exports =  {
                 .catch(err => res.status(500).send(err))
         } else { // Inserir um usuário no banco
             await User.create(user)
-                .then(u => res.status(201).json({u}))
+                .then(u => res.status(201).json(u))
                 .catch(err => res.status(500).send(err))
         }
 
