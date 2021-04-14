@@ -40,7 +40,7 @@ module.exports =  {
         state = user.address.state.trim()
         city = user.address.city.trim()
 
-        try {
+        /* try {
             existsOrErro(street, {"code": 410, "message": "street field is mandatory"})
             existsOrErro(number, {"code": 410, "message": "number field is mandatory"})
             existsOrErro(district, {"code": 410, "message": "district field is mandatory"})
@@ -52,7 +52,7 @@ module.exports =  {
                 "code": 400,
                 "msg": msg
             }
-        }
+        } */
         
         await Address.create({ street, number, district, zipcode, state, city })
             .then(a => {
