@@ -113,3 +113,51 @@ tags:
         description: cnpj field must be 14 characters
       500:
         description: Some server
+
+/users/{user_id}:
+  get:
+    summary: Get the user by id
+    tags: [User]
+    parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+        description: The user id
+    responses:
+      200:
+        description: The user description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      404:
+        description: The user was not found
+  put:
+    summary: Update the user by id
+    tags: [User]
+    parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+        description: The user id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/User'
+    responses:
+      202:
+        description: The user was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/User'
+      404:
+        description: The user was not found
+      500:
+        description: Some error happened
