@@ -10,27 +10,27 @@ module.exports = {
       },
       street: {
         type: Sequelize.STRING(70),
-        allowNull: false,
+        allowNull: true,
       },
       number: {
         type: Sequelize.STRING(10),
-        allowNull: false,
+        allowNull: true,
       },
       district: {
         type: Sequelize.STRING(70),
-        allowNull: false,
+        allowNull: true,
       },
       zipcode: {
         type: Sequelize.STRING(8),
-        allowNull: false,
+        allowNull: true,
       },
       state: {
         type: Sequelize.STRING(2),
-        allowNull: false,
+        allowNull: true,
       },
       city: {
         type: Sequelize.STRING(70),
-        allowNull: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,

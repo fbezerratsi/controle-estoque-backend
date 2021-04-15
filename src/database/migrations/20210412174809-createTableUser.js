@@ -10,7 +10,7 @@ module.exports = {
       },
       address_id: {
         type: Sequelize.UUID,
-        allowNull: false,
+        allowNull: true,
         references: { model: 'addresses', key: 'address_id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',

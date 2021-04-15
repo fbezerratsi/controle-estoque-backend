@@ -2,6 +2,7 @@ const User = require('../model/User')
 const Address = require('../model/Address')
 const bcrypt = require('bcrypt-nodejs')
 const { existsOrErro, notExistsOrErro, equalsOrErro } = require('../model/validation');
+const { use } = require('passport');
 
 const encryptPassword = password => {
     const salt = bcrypt.genSaltSync(10);
@@ -33,35 +34,14 @@ module.exports =  {
 
         const user = { ...req.body }
         
-        street = user.address.street.trim()
-        number = user.address.number.trim()
-        district = user.address.district.trim()
-        zipcode = user.address.zipcode.trim()
-        state = user.address.state.trim()
-        city = user.address.city.trim()
-
-        /* try {
-            existsOrErro(street, {"code": 410, "message": "street field is mandatory"})
-            existsOrErro(number, {"code": 410, "message": "number field is mandatory"})
-            existsOrErro(district, {"code": 410, "message": "district field is mandatory"})
-            existsOrErro(zipcode, {"code": 410, "message": "zipcode field is mandatory"})
-            existsOrErro(state, {"code": 410, "message": "state field is mandatory"})
-            existsOrErro(city, {"code": 410, "message": "city field is mandatory"})
-        } catch(msg) {
-            return {
-                "code": 400,
-                "msg": msg
-            }
-        } */
-        
-        await Address.create({ street, number, district, zipcode, state, city })
-            .then(a => {
-                user.address_id = a.address_id
-            })
-
-
-        //res.json(user)
-        
+        if (user.address.street) {
+            user.address.street = user.address.street.trim()
+            user.address.number = user.address.number.trim()
+            user.address.district = user.address.district.trim()
+            user.address.zipcode = user.address.zipcode.trim()
+            user.address.state = user.address.state.trim()
+            user.address.city = user.address.city.trim()
+        }
         
         if (req.params.user_id) user.user_id = req.params.user_id
         
@@ -86,13 +66,53 @@ module.exports =  {
         delete user.confirmPassword
 
         if (user.user_id) { // Atualizar um usuário no banco
-            await User.update(user, { where: { user_id: user.user_id } })
-                .then(_ => res.status(204).send())
-                .catch(err => res.status(500).send(err))
+            await User.update(
+                {
+                    'name': user.name,
+                    'cpf': user.cpf,
+                    'email': user.email,
+                    'password': user.password,
+                    'admin': user.admin,
+                },
+                { 
+                    include: { association: 'address' },
+                    where: { user_id: user.user_id },
+                    returning: true
+                },
+            )
+                .then(u => {
+                    addressIdTheReturn = {...u[1]}[0].address_id
+                    Address.update(user.address, {
+                        where: { address_id: addressIdTheReturn },
+                        returning: true
+                    })
+                    res.status(202).json({...u[1]}[0])
+                })
+                .then(a => res.status(202).json(a))
+                .catch(_ => res.status(500).send())
+
         } else { // Inserir um usuário no banco
-            await User.create(user)
+            
+            await User.create(
+                {
+                    'name': user.name,
+                    'cpf': user.cpf,
+                    'email': user.email,
+                    'password': user.password,
+                    'admin': user.admin,
+                    'address': {
+                        'street': user.address.street,
+                        'number': user.address.number,
+                        'district': user.address.district,
+                        'zipcode': user.address.zipcode,
+                        'state': user.address.state,
+                        'city': user.address.city,
+                    }
+                },
+                {include: { association: 'address' }}
+            )
                 .then(u => res.status(201).json(u))
-                .catch(err => res.status(500).send(err))
+            
         }
 
     }

@@ -1,0 +1,115 @@
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - cpf
+        - email
+        - password
+      properties:
+        user_id:
+          type: uuid
+          description: The auto-generated id of the user
+        name:
+          type: string
+          description: The user name
+        cpf:
+          type: string
+          description: The user cpf
+        email:
+          type: string
+          description: The user email
+        password:
+          type: string
+          description: The user password
+        admin:
+          type: boolean
+          description: The user admin
+        address:
+          type: object
+          description: The user address
+          properties:
+            address_id:
+              type: uuid
+              description: The address id
+            street:
+              type: string
+              description: The address street
+            number:
+              type: string
+              description: The address number
+            district:
+              type: string
+              description: The address district
+            zipcode:
+              type: string
+              description: The address zipcode
+            state:
+              type: string
+              description: The address state
+            city:
+              type: string
+              description: The address city
+      example:
+        name: "Felipe Bezerra dos Santos"
+        cpf: "00000000000"
+        email: "felipe@gmail.com"
+        password: "12345"
+        confirmPassword: "12345"
+        admin: false
+        address:
+          street: "Rua Manoel Justino de Medeiros"
+          number: "123"
+          district: "Centro"
+          zipcode: "59350000"
+          state: "RN"
+          city: "Santana do Seridó"
+
+
+tags:
+  name: User
+  description: The user managing API
+
+/users:
+  get:
+    summary: Returns the list of all the user
+    tags: [User]
+    responses:
+      200:
+        description: The list of the user
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+  post:
+    summary: Create a new User
+    tags: [User]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    responses:
+      201:
+        description: The User was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      410:
+        description: user field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      413:
+        description: cnpj field is not valid data
+      414:
+        description: cnpj field must be 14 characters
+      500:
+        description: Some server

@@ -40,11 +40,8 @@ module.exports =  {
 
             const ProviderFromDB = await Provider.findOne(
                 { 
-                    where: { 
-                        [Op.or]: [
-                            {cnpj: provider.cnpj},
-                            {name: provider.name}
-                        ] 
+                    where: {
+                        name: provider.name
                     }
                 })
             if (!provider.provider_id) {
