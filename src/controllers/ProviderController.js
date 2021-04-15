@@ -1,5 +1,3 @@
-const { json } = require('express');
-const { Op } = require("sequelize");
 const Provider = require('../model/Provider')
 const { fieldSizeProvider, fieldSizeCnpj, numericField, existsOrErro, notExistsOrErro } = require('../model/validation');
 
