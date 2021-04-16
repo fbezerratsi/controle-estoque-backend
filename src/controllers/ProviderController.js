@@ -45,13 +45,9 @@ module.exports =  {
                             {name: provider.name},
                             { [Op.and]: [{cnpj: provider.cnpj}, {cnpj: {[Op.ne]: ""}}] }
                         ],
-                        /* cnpj: {
-                            [Op.ne]: ""
-                        } */
                     }
                 })
             if (!provider.provider_id) {
-                console.log('Entrou')
                 notExistsOrErro(ProviderFromDB, {"code": 412, "message": "supplier already registered"})
             }
             
@@ -60,7 +56,7 @@ module.exports =  {
         }
 
         
-        /* if (provider.provider_id) { // Atualizar um usuário no banco
+        if (provider.provider_id) { // Atualizar um usuário no banco
             await Provider.update(provider, { where: { provider_id: provider.provider_id } })
                 .then(prov => res.status(204).json({prov}))
                 .catch(err => res.status(500).send(err))
@@ -68,7 +64,7 @@ module.exports =  {
             await Provider.create(provider)
                 .then(prov => res.status(201).json({prov}))
                 .catch(err => res.status(500).send(err))
-        } */
+        }
 
     }
 
