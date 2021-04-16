@@ -38,4 +38,6 @@ function numericField(value, msg) {
         if (valueA !== valueB) throw msg
     }
     
+    
+
     module.exports = { existsOrErro, notExistsOrErro, equalsOrErro, fieldSizeProvider, fieldSizeCnpj, numericField }

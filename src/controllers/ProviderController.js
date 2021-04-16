@@ -23,7 +23,8 @@ module.exports =  {
         
         const provider = { ...req.body }
         provider.name = provider.name.trim()
-        provider.cnpj = provider.cnpj.trim()
+        provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
+
         
         if (req.params.provider_id) provider.provider_id = req.params.provider_id
         

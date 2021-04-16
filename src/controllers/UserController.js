@@ -34,6 +34,8 @@ module.exports =  {
 
         const user = { ...req.body }
         
+        user.cpf = user.cpf.trim().replace(/[.-]/g, '')
+
         if (user.address.street) {
             user.address.street = user.address.street.trim()
             user.address.number = user.address.number.trim()
