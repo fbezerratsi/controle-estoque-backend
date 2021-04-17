@@ -60,6 +60,7 @@ module.exports =  {
                 notExistsOrErro(userFromDB, {"code": 412, "message": "supplier already registered"})
             }
             
+            
         } catch(msg) {
             return res.status(400).send(msg)
         }
