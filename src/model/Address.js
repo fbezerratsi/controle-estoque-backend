@@ -21,7 +21,8 @@ class Address extends Model {
     }
     static associate(models) {
         this.hasOne(models.User, { foreignKey: 'address_id', as: 'users' })
-    //    this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
+        this.hasOne(models.Stock, { foreignKey: 'address_id', as: 'stock' })
+        //this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
     }
 }
 

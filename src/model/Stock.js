@@ -1,10 +1,10 @@
 const { Model, DataTypes } = require('sequelize')
 
 
-class Shelf extends Model {
+class Stock extends Model {
     static init(connection) {
         super.init({
-            shelf_id: {
+            stock_id: {
                 primaryKey: true,
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
@@ -15,9 +15,9 @@ class Shelf extends Model {
         })
     }
     static associate(models) {
-        //this.hasMany(models.Address, { foreignKey: 'user_id', as: 'addresses' })
+        this.belongsTo(models.Address, { foreignKey: 'address_id', as: 'address' })
         //this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
     }
 }
 
-module.exports = Shelf
+module.exports = Stock

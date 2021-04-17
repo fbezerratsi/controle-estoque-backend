@@ -1,7 +1,5 @@
 const config = require('./sequelizefile.js')
-//const config = require('dotenv')
 const Sequelize = require('sequelize')
-
 const sequelize = new Sequelize(config)
 
 const User = require('../model/User')
@@ -12,13 +10,13 @@ const Shelf = require('../model/Shelf')
 Shelf.init(sequelize)
 const Address = require('../model/Address')
 Address.init(sequelize)
+const Stock = require('../model/Stock')
+Stock.init(sequelize)
 
 
-//Address.init(connection)
-//Tech.init(connection)
-//Address.associate(connection.models)
+Stock.associate(sequelize.models)
 User.associate(sequelize.models)
 Address.associate(sequelize.models)
-//Tech.associate(connection.models)
+
 
 module.exports = sequelize

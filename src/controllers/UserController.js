@@ -48,16 +48,16 @@ module.exports =  {
         if (req.params.user_id) user.user_id = req.params.user_id
         
         try {
-            existsOrErro(user.name, "Nome não informado")
-            existsOrErro(user.cpf, "CPF não informado")
-            existsOrErro(user.email, "E-mail não informado")
-            existsOrErro(user.password, "Senha não informado")
-            existsOrErro(user.confirmPassword, "Confirmação de senha não informada")
-            equalsOrErro(user.password, user.confirmPassword, "Senhas não conferem")
+            existsOrErro(user.name, {"code": 410, "message": "name field is mandatory"})
+            existsOrErro(user.cpf, {"code": 410, "message": "cpf field is mandatory"})
+            existsOrErro(user.email, {"code": 410, "message": "email field is mandatory"})
+            existsOrErro(user.password, {"code": 410, "message": "password field is mandatory"})
+            existsOrErro(user.confirmPassword, {"code": 410, "message": "confirm password field is mandatory"})
+            equalsOrErro(user.password, user.confirmPassword, {"code": 410, "message": "passwords do not match"})
 
             const userFromDB = await User.findOne({ where: { cpf: user.cpf } })
             if (!user.user_id) {
-                notExistsOrErro(userFromDB, "Usuário já cadastrado")
+                notExistsOrErro(userFromDB, {"code": 412, "message": "supplier already registered"})
             }
             
         } catch(msg) {
@@ -69,13 +69,7 @@ module.exports =  {
 
         if (user.user_id) { // Atualizar um usuário no banco
             await User.update(
-                {
-                    'name': user.name,
-                    'cpf': user.cpf,
-                    'email': user.email,
-                    'password': user.password,
-                    'admin': user.admin,
-                },
+                user,
                 { 
                     include: { association: 'address' },
                     where: { user_id: user.user_id },
@@ -96,21 +90,7 @@ module.exports =  {
         } else { // Inserir um usuário no banco
             
             await User.create(
-                {
-                    'name': user.name,
-                    'cpf': user.cpf,
-                    'email': user.email,
-                    'password': user.password,
-                    'admin': user.admin,
-                    'address': {
-                        'street': user.address.street,
-                        'number': user.address.number,
-                        'district': user.address.district,
-                        'zipcode': user.address.zipcode,
-                        'state': user.address.state,
-                        'city': user.address.city,
-                    }
-                },
+                user,
                 {include: { association: 'address' }}
             )
                 .then(u => res.status(201).json(u))

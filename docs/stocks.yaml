@@ -1,0 +1,143 @@
+
+components:
+  schemas:
+    Stock:
+      type: object
+      required:
+        - name
+      properties:
+        stock_id:
+          type: uuid
+          description: The auto-generated id of the stock
+        name:
+          type: string
+          description: The stock name
+        address:
+          type: object
+          description: The stock address
+          properties:
+            address_id:
+              type: uuid
+              description: The address id
+            street:
+              type: string
+              description: The address street
+            number:
+              type: string
+              description: The address number
+            district:
+              type: string
+              description: The address district
+            zipcode:
+              type: string
+              description: The address zipcode
+            state:
+              type: string
+              description: The address state
+            city:
+              type: string
+              description: The address city
+      example:
+        name: "Estoque 1"
+        address:
+          street: "Avenida José gastel"
+          number: "123"
+          district: "Centro"
+          zipcode: "59350000"
+          state: "RN"
+          city: "Santana do Seridó"
+
+
+tags:
+  name: Stock
+  description: The stock managing API
+
+/stocks:
+  get:
+    summary: Returns the list of all the stock
+    tags: [Stock]
+    responses:
+      200:
+        description: The list of the stock
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Stock'
+  post:
+    summary: Create a new Stock
+    tags: [Stock]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Stock'
+    responses:
+      201:
+        description: The stock was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stock'
+      410:
+        description: stock field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      413:
+        description: cnpj field is not valid data
+      414:
+        description: cnpj field must be 14 characters
+      500:
+        description: Some server
+
+/stocks/{stock_id}:
+  get:
+    summary: Get the stock by id
+    tags: [Stock]
+    parameters:
+      - in: path
+        name: stock_id
+        schema:
+          type: string
+        required: true
+        description: The stock id
+    responses:
+      200:
+        description: The stock description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stock'
+      404:
+        description: The stock was not found
+  put:
+    summary: Update the stock by id
+    tags: [Stock]
+    parameters:
+      - in: path
+        name: stock_id
+        schema:
+          type: string
+        required: true
+        description: The stock id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/Stock'
+    responses:
+      202:
+        description: The stock was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Stock'
+      404:
+        description: The stock was not found
+      500:
+        description: Some error happened
