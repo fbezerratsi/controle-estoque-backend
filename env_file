@@ -1,3 +1,12 @@
-module.exports = {
-    authSecret = ''
-}
+
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
+DB_PORT=
+
+DB_URL=
+
+AUTH_SECRET=
+
+START_OF_ROUTER=/api/v1

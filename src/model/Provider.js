@@ -10,10 +10,9 @@ class Provider extends Model {
                 defaultValue: DataTypes.UUIDV4
             },
             name: DataTypes.STRING(70),
-            cnpj: DataTypes.STRING(14),
-
+            cnpj: DataTypes.STRING(14)
         }, {
-            sequelize: connection
+            sequelize: connection,
         })
     }
     //static associate(models) {

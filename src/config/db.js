@@ -12,7 +12,8 @@ const Address = require('../model/Address')
 Address.init(sequelize)
 const Stock = require('../model/Stock')
 Stock.init(sequelize)
-
+const MedicineType = require('../model/MedicineType')
+MedicineType.init(sequelize)
 
 Stock.associate(sequelize.models)
 User.associate(sequelize.models)

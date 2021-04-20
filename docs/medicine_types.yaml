@@ -1,0 +1,111 @@
+
+components:
+  schemas:
+    MedicineType:
+      type: object
+      required:
+        - name
+      properties:
+        medicine_type_id:
+          type: uuid
+          description: The auto-generated id of the medicine type
+        name:
+          type: string
+          description: The medicine type name
+        description:
+          type: string
+          description: The medicine type description
+      example:
+        name: "Psicotrópico"
+        description: ""
+
+
+tags:
+  name: MedicineType
+  description: The medicine type managing API
+
+/medicine_type:
+  get:
+    summary: Returns the list of all the medicine type
+    tags: [MedicineType]
+    responses:
+      200:
+        description: The list of the medicine type
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/MedicineType'
+  post:
+    summary: Create a new medicine type
+    tags: [MedicineType]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MedicineType'
+    responses:
+      201:
+        description: The medicine type was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicineType'
+      410:
+        description: name field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      500:
+        description: Some server
+              
+/medicine_type/{medicine_type_id}:
+  get:
+    summary: Get the medicine type by id
+    tags: [MedicineType]
+    parameters:
+      - in: path
+        name: medicine_type_id
+        schema:
+          type: string
+        required: true
+        description: The medicine type id
+    responses:
+      200:
+        description: The medicine type description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicineType'
+      404:
+        description: The medicine type was not found
+  put:
+    summary: Update the medicine type by id
+    tags: [MedicineType]
+    parameters:
+      - in: path
+        name: medicine_type_id
+        schema:
+          type: string
+        required: true
+        description: The medicine type id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/MedicineType'
+    responses:
+      204:
+        description: The medicine type was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/MedicineType'
+      404:
+        description: The medicine type was not found
+      500:
+        description: Some error happened

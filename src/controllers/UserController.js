@@ -2,7 +2,6 @@ const User = require('../model/User')
 const Address = require('../model/Address')
 const bcrypt = require('bcrypt-nodejs')
 const { existsOrErro, notExistsOrErro, equalsOrErro } = require('../model/validation');
-const { use } = require('passport');
 
 const encryptPassword = password => {
     const salt = bcrypt.genSaltSync(10);
