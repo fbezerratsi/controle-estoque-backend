@@ -1,0 +1,106 @@
+
+components:
+  schemas:
+    ActivePrinciple:
+      type: object
+      required:
+        - name
+      properties:
+        shelf_id:
+          type: uuid
+          description: The auto-generated id of the active principle
+        name:
+          type: string
+          description: The active principle name
+      example:
+        name: "Anador"
+
+tags:
+  name: ActivePrinciple
+  description: The active principle managing API
+
+/active_principle:
+  get:
+    summary: Returns the list of all the active principle
+    tags: [ActivePrinciple]
+    responses:
+      200:
+        description: The list of the active principle
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ActivePrinciple'
+  post:
+    summary: Create a new active principle
+    tags: [ActivePrinciple]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ActivePrinciple'
+    responses:
+      201:
+        description: The active principle was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivePrinciple'
+      410:
+        description: active principle field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      500:
+        description: Some server
+              
+/active_principle/{active_principle_id}:
+  get:
+    summary: Get the active principle by id
+    tags: [ActivePrinciple]
+    parameters:
+      - in: path
+        name: active_principle_id
+        schema:
+          type: string
+        required: true
+        description: The active principle id
+    responses:
+      200:
+        description: The active principle description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivePrinciple'
+      404:
+        description: The active principle was not found
+  put:
+    summary: Update the active principle by id
+    tags: [ActivePrinciple]
+    parameters:
+      - in: path
+        name: active_principle_id
+        schema:
+          type: string
+        required: true
+        description: The active principle id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/ActivePrinciple'
+    responses:
+      204:
+        description: The active principle was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/ActivePrinciple'
+      404:
+        description: The active principle was not found
+      500:
+        description: Some error happened

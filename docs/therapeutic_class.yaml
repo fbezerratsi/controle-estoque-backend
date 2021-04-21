@@ -1,0 +1,106 @@
+
+components:
+  schemas:
+    TherapeuticClass:
+      type: object
+      required:
+        - name
+      properties:
+        therapeutic_class_id:
+          type: uuid
+          description: The auto-generated id of the therapeutic class
+        name:
+          type: string
+          description: The therapeutic class name
+      example:
+        name: "Analgésico"
+
+tags:
+  name: TherapeuticClass
+  description: The therapeutic class managing API
+
+/therapeutic_class:
+  get:
+    summary: Returns the list of all the therapeutic class
+    tags: [TherapeuticClass]
+    responses:
+      200:
+        description: The list of the therapeutic class
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TherapeuticClass'
+  post:
+    summary: Create a new therapeutic class
+    tags: [TherapeuticClass]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TherapeuticClass'
+    responses:
+      201:
+        description: The therapeutic class was successfully created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TherapeuticClass'
+      410:
+        description: therapeutic class field is mandatory
+      411:
+        description: supplier field must have a maximum of 70 characters
+      412:
+        description: supplier already registered
+      500:
+        description: Some server
+              
+/therapeutic_class/{therapeutic_class_id}:
+  get:
+    summary: Get the therapeutic class by id
+    tags: [TherapeuticClass]
+    parameters:
+      - in: path
+        name: therapeutic_class_id
+        schema:
+          type: string
+        required: true
+        description: The therapeutic class id
+    responses:
+      200:
+        description: The therapeutic class description by id
+        contens:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TherapeuticClass'
+      404:
+        description: The therapeutic class was not found
+  put:
+    summary: Update the therapeutic class by id
+    tags: [TherapeuticClass]
+    parameters:
+      - in: path
+        name: therapeutic_class_id
+        schema:
+          type: string
+        required: true
+        description: The therapeutic class id
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+              $ref: '#/components/schemas/TherapeuticClass'
+    responses:
+      204:
+        description: The therapeutic class was update
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/TherapeuticClass'
+      404:
+        description: The therapeutic class was not found
+      500:
+        description: Some error happened

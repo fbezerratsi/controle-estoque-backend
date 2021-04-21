@@ -7,6 +7,8 @@ const loadShelvesRoutes = require('./shelves')
 const loadAddressRoutes = require('./address')
 const loadStockRoutes = require('./stock')
 const loadMedicineTypeRoutes = require('./medicineType')
+const loadActivePrincipleRoutes = require('./activePrinciple')
+const loadTherapeuticClassRoutes = require('./therapeuticClass')
 
 const routes = express.Router()
 
@@ -17,5 +19,7 @@ loadShelvesRoutes(routes)
 loadAddressRoutes(routes)
 loadStockRoutes(routes)
 loadMedicineTypeRoutes(routes)
+loadActivePrincipleRoutes(routes)
+loadTherapeuticClassRoutes(routes)
 
 module.exports = routes
