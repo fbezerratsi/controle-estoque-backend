@@ -1,10 +1,11 @@
 const { Op } = require('sequelize')
 const Provider = require('../model/Provider')
-const { fieldSizeProvider, fieldSizeCnpj, numericField, existsOrErro, notExistsOrErro } = require('../model/validation');
+const { fieldSizeProvider, fieldSizeCnpj, numericField, existsOrErro } = require('../model/validation');
 
 module.exports =  {
 
     async get(req, res) {
+        
         await Provider.findAll()
             .then(provider => res.json(provider))
             .catch(err => res.status(500).send(err))
@@ -20,16 +21,24 @@ module.exports =  {
             .catch(err => res.status(500).send(err))
     
     },
-    async save(req, res) {
+    async edit(req, res) {
+        const provider = { ...req.body }
+        provider.name = provider.name.trim()
+        provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
         
+        if (req.params.provider_id) {
+            provider.provider_id = req.params.provider_id
+
+            await Provider.update(provider, { where: { provider_id: provider.provider_id } })
+                .then(prov => res.status(204).json({prov}))
+                .catch(err => res.status(500).send(err))
+        }
+    },
+    async save(req, res) {
         const provider = { ...req.body }
         provider.name = provider.name.trim()
         provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
 
-        
-        if (req.params.provider_id) provider.provider_id = req.params.provider_id
-        
-        
         try {
         
             existsOrErro(provider.name, {"code": 410, "message": "provider field is mandatory"})
@@ -37,35 +46,38 @@ module.exports =  {
             fieldSizeCnpj(provider.cnpj, {"code": 414, "message": "cnpj field must be 14 characters"})
             numericField(provider.cnpj, {"code": 413, "message": "cnpj field is not valid data"})            
             
-
-            const ProviderFromDB = await Provider.findOne(
-                { 
-                    where: {
-                        [Op.or]: [
-                            {name: provider.name},
-                            { [Op.and]: [{cnpj: provider.cnpj}, {cnpj: {[Op.ne]: ""}}] }
-                        ],
-                    }
-                })
-            if (!provider.provider_id) {
-                notExistsOrErro(ProviderFromDB, {"code": 412, "message": "supplier already registered"})
-            }
-            
         } catch(msg) {
             return res.status(400).send(msg)
         }
 
-        
-        if (provider.provider_id) { // Atualizar um usuário no banco
-            await Provider.update(provider, { where: { provider_id: provider.provider_id } })
-                .then(prov => res.status(204).json({prov}))
-                .catch(err => res.status(500).send(err))
-        } else { // Inserir um usuário no banco
-            await Provider.create(provider)
-                .then(prov => res.status(201).json({prov}))
-                .catch(err => res.status(500).send(err))
-        }
+        await Provider.findOrCreate({
+            where: { name: [provider.name, provider.cnpj] },
+            defaults: provider
+        })
+            .then( ([ provider, created ]) => {
+                if (created) {
+                    res.status(201).json(provider)
+                } else {
+                    res.json({"code": 412, "message": "supplier already registered"})
+                }
+            })
 
     }
 
 }
+
+/* function validationProvider(a, b) {
+    provider.name = provider.name.trim()
+    provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
+
+    try {
+    
+        existsOrErro(provider.name, {"code": 410, "message": "provider field is mandatory"})
+        fieldSizeProvider(provider.name, {"code": 411, "message": "supplier field must have a maximum of 70 characters."})    
+        fieldSizeCnpj(provider.cnpj, {"code": 414, "message": "cnpj field must be 14 characters"})
+        numericField(provider.cnpj, {"code": 413, "message": "cnpj field is not valid data"})            
+        
+    } catch(msg) {
+        return res.status(400).send(msg)
+    }
+} */

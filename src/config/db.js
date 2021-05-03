@@ -12,16 +12,20 @@ const Address = require('../model/Address')
 Address.init(sequelize)
 const Stock = require('../model/Stock')
 Stock.init(sequelize)
-const MedicineType = require('../model/MedicineType')
-MedicineType.init(sequelize)
 const ActivePrinciple = require('../model/ActivePrinciple')
 ActivePrinciple.init(sequelize)
 const TherapeuticClass = require('../model/TherapeuticClass')
 TherapeuticClass.init(sequelize)
+const Medicine = require('../model/Medicine')
+Medicine.init(sequelize)
 
 Stock.associate(sequelize.models)
 User.associate(sequelize.models)
 Address.associate(sequelize.models)
+Medicine.associate(sequelize.models)
+TherapeuticClass.associate(sequelize.models)
+ActivePrinciple.associate(sequelize.models)
+
 
 
 module.exports = sequelize
