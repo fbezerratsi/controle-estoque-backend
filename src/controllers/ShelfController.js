@@ -1,5 +1,5 @@
 const Shelf = require('../model/Shelf')
-const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../model/validation');
+const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../validation/validation');
 
 module.exports =  {
 

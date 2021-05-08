@@ -1,11 +1,10 @@
 const { Op } = require('sequelize')
 const Provider = require('../model/Provider')
-const { fieldSizeProvider, fieldSizeCnpj, numericField, existsOrErro } = require('../model/validation');
+const { fieldSizeProvider, fieldSizeCnpj, numericField, existsOrErro } = require('../validation/validation');
 
 module.exports =  {
 
     async get(req, res) {
-        
         await Provider.findAll()
             .then(provider => res.json(provider))
             .catch(err => res.status(500).send(err))
@@ -23,20 +22,49 @@ module.exports =  {
     },
     async edit(req, res) {
         const provider = { ...req.body }
-        provider.name = provider.name.trim()
-        provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
         
-        if (req.params.provider_id) {
-            provider.provider_id = req.params.provider_id
-
-            await Provider.update(provider, { where: { provider_id: provider.provider_id } })
-                .then(prov => res.status(204).json({prov}))
-                .catch(err => res.status(500).send(err))
+        newProvider = validationProvider(provider)
+        
+        //Se der erro entra aqui
+        if (newProvider.code) {
+            res.status(400).json(newProvider)
+        } else {
+            if (req.params.provider_id) {
+                provider.provider_id = req.params.provider_id
+    
+                await Provider.update(newProvider, { where: { provider_id: provider.provider_id } })
+                    .then(prov => res.status(204).json({prov}))
+                    .catch(err => res.status(500).send(err))
+            }
         }
+        
     },
     async save(req, res) {
         const provider = { ...req.body }
-        provider.name = provider.name.trim()
+
+        newProvider = validationProvider(provider)
+        
+        //Se der erro entra aqui
+        if (newProvider.code) {
+            res.status(400).json(newProvider)
+        } else {
+            await Provider.findOrCreate({
+                where: [
+                    { name: newProvider.name },
+                    { cnpj: newProvider.cnpj }
+                ],
+                defaults: newProvider
+            })
+                .then( ([ provider, created ]) => {
+                    if (created) {
+                        res.status(201).json(provider)
+                    } else {
+                        res.json({"code": 412, "message": "supplier already registered"})
+                    }
+                })
+        }
+
+        /* provider.name = provider.name.trim()
         provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
 
         try {
@@ -48,25 +76,15 @@ module.exports =  {
             
         } catch(msg) {
             return res.status(400).send(msg)
-        }
+        } */
 
-        await Provider.findOrCreate({
-            where: { name: [provider.name, provider.cnpj] },
-            defaults: provider
-        })
-            .then( ([ provider, created ]) => {
-                if (created) {
-                    res.status(201).json(provider)
-                } else {
-                    res.json({"code": 412, "message": "supplier already registered"})
-                }
-            })
+        
 
     }
 
 }
 
-/* function validationProvider(a, b) {
+function validationProvider(provider) {
     provider.name = provider.name.trim()
     provider.cnpj = provider.cnpj.trim().replace(/[./-]/g, '') // elimina os espaços desnecessários e os caracteres especiais
 
@@ -78,6 +96,8 @@ module.exports =  {
         numericField(provider.cnpj, {"code": 413, "message": "cnpj field is not valid data"})            
         
     } catch(msg) {
-        return res.status(400).send(msg)
+        return msg
     }
-} */
+
+    return provider
+}

@@ -1,5 +1,5 @@
 const ActivePrinciple = require('../model/ActivePrinciple')
-const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../model/validation');
+const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../validation/validation');
 
 module.exports =  {
 

@@ -1,6 +1,6 @@
 const Stock = require('../model/Stock')
 const Address = require('../model/Address')
-const { existsOrErro, notExistsOrErro } = require('../model/validation');
+const { existsOrErro, notExistsOrErro } = require('../validation/validation');
 
 
 module.exports =  {

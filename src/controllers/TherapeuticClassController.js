@@ -1,5 +1,5 @@
 const TherapeuticClass = require('../model/TherapeuticClass')
-const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../model/validation');
+const { fieldSizeProvider, existsOrErro, notExistsOrErro } = require('../validation/validation');
 
 module.exports =  {
 

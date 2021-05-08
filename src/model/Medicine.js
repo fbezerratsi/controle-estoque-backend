@@ -9,11 +9,11 @@ class Medicine extends Model {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4
             },
-            commercial_name: DataTypes.STRING(100),
+            commercial_name: DataTypes.STRING(70),
             unit_of_measurement: DataTypes.STRING(10),
-            type_of_medicine: DataTypes.ENUM("Medicamento Básico","Psicotrópico","Injetável"),
-            stripe: DataTypes.ENUM("Sem Tarja", "Amarela", "Vermelha", "Preta"),
-            classification: DataTypes.ENUM("Referência", "Similar", "Genérico"),
+            type_of_medicine: DataTypes.ENUM("MEDICAMENTO BÁSICO","PSICOTRÓPICO","INJETÁVEL"),
+            stripe: DataTypes.ENUM("SEM TARJA", "AMARELA", "VERMELHA", "PRETA"),
+            classification: DataTypes.ENUM("REFERÊNCIA", "SIMILAR", "GENÉRICO"),
         }, {
             sequelize: connection
         })

@@ -9,7 +9,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       commercial_name: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(70),
         allowNull: false,
       },
       unit_of_measurement: {

@@ -1,5 +1,5 @@
 const Address = require('../model/Address')
-const { existsOrErro, notExistsOrErro, numericField } = require('../model/validation');
+const { existsOrErro, notExistsOrErro, numericField } = require('../validation/validation');
 
 module.exports =  {
     async get(req, res) {
