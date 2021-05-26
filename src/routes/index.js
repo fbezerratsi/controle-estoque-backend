@@ -9,6 +9,7 @@ const loadStockRoutes = require('./stock')
 const loadActivePrincipleRoutes = require('./activePrinciple')
 const loadTherapeuticClassRoutes = require('./therapeuticClass')
 const loadMedicineRoutes = require('./medicine')
+const loadBatchRoutes = require('./batch')
 
 const routes = express.Router()
 
@@ -21,5 +22,6 @@ loadStockRoutes(routes)
 loadActivePrincipleRoutes(routes)
 loadTherapeuticClassRoutes(routes)
 loadMedicineRoutes(routes)
+loadBatchRoutes(routes)
 
 module.exports = routes

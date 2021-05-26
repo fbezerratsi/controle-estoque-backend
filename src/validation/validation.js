@@ -11,6 +11,10 @@ function numericField(value, msg) {
     if (isNaN(value)) throw msg
 }
 
+function fieldSize(value, msg, size) {
+    if (value.length > size) throw msg
+}
+
 /* 
     Se o valor não existir vai dar um erro...
     Lógica: ou existe ou gera um erro
@@ -40,4 +44,4 @@ function numericField(value, msg) {
     
     
 
-    module.exports = { existsOrErro, notExistsOrErro, equalsOrErro, fieldSizeProvider, fieldSizeCnpj, numericField }
+    module.exports = { existsOrErro, notExistsOrErro, equalsOrErro, fieldSizeProvider, fieldSizeCnpj, numericField, fieldSize }

@@ -1,6 +1,7 @@
 const Stock = require('../model/Stock')
 const Address = require('../model/Address')
-const { existsOrErro, notExistsOrErro } = require('../validation/validation');
+const { validationStock } = require('../validation/stockValidation');
+const { associations } = require('../model/Stock');
 
 
 module.exports =  {
@@ -19,40 +20,64 @@ module.exports =  {
     async get(req, res) {
         
         await Stock.findAll({
-            include: { association: 'address' }
+            attributes: ['stock_id','name'],
+            include: [
+                {
+                    model: Address,
+                    as: 'address',
+                    attributes: ['street','number','district','zipcode','state','city']
+                }
+            ]
         })
             .then(stocks => res.json(stocks))
             .catch(err => res.status(500).send(err))
+    },
+    async edit(req, res) {
+
+        const { stock_id } = req.params
+        const stock = await Stock.findByPk(stock_id)
+
+        const data = { ...req.body }
+        //const {...data}  = req.body
+
+        let newStock = validationStock(data)
+        if (newStock.code) {
+            res.json(newStock)
+        } else {
+            /* await stock.update(data, {
+                include: ['address'],
+            })
+                .then(med => res.status(201).json(med)) */
+
+            const r = await stock.update(data)
+                
+            await Address.update(data.address, {
+                where: { address_id: r.address_id }
+            })
+                .then(stock => res.status(200).json(stock))
+            
+        }
+
     },
     async save(req, res) {
 
         const stock = { ...req.body }
 
-        stock.name = stock.name.trim()
-        if (stock.address.street) {
-            stock.address.street = stock.address.street.trim()
-            stock.address.number = stock.address.number.trim()
-            stock.address.district = stock.address.district.trim()
-            stock.address.zipcode = stock.address.zipcode.trim()
-            stock.address.state = stock.address.state.trim()
-            stock.address.city = stock.address.city.trim()
-        }
-        
-        if (req.params.stock_id) stock.stock_id = req.params.stock_id
-        
-        try {
-            existsOrErro(stock.name, {"code": 410, "message": "stock field is mandatory"})
 
-            const stockFromDB = await Stock.findOne({ where: { name: stock.name } })
-            if (!stock.stock_id) {
-                notExistsOrErro(stockFromDB, {"code": 412, "message": "supplier already registered"})
-            }
-            
-        } catch(msg) {
-            return res.status(400).send(msg)
-        }
+        let newStock = validationStock(stock)
         
-        if (stock.stock_id) { // Atualizar um usuário no banco
+        if (newStock.code) {
+            res.json(newStock)
+        } else {
+            await Stock.create(stock, {
+                include: ['address']
+            })
+                .then(u => res.status(201).json(u))
+        }
+
+        
+        
+        /* if (stock.stock_id) { // Atualizar um usuário no banco
             await Stock.update(
                 stock,
                 { 
@@ -72,15 +97,9 @@ module.exports =  {
                 .then(a => res.status(202).json(a))
                 .catch(_ => res.status(500).send())
 
-        } else { // Inserir um usuário no banco
-            
-            await Stock.create(
-                stock,
-                {include: { association: 'address' }}
-            )
-                .then(u => res.status(201).json(u))
-            
-        }
+        } */
+        
+        
 
     }
 }

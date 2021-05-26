@@ -18,6 +18,8 @@ const TherapeuticClass = require('../model/TherapeuticClass')
 TherapeuticClass.init(sequelize)
 const Medicine = require('../model/Medicine')
 Medicine.init(sequelize)
+const Batch = require('../model/Batch')
+Batch.init(sequelize)
 
 Stock.associate(sequelize.models)
 User.associate(sequelize.models)
@@ -25,7 +27,8 @@ Address.associate(sequelize.models)
 Medicine.associate(sequelize.models)
 TherapeuticClass.associate(sequelize.models)
 ActivePrinciple.associate(sequelize.models)
-
+Batch.associate(sequelize.models)
+Provider.associate(sequelize.models)
 
 
 module.exports = sequelize

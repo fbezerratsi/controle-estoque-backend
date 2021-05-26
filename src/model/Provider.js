@@ -15,10 +15,11 @@ class Provider extends Model {
             sequelize: connection,
         })
     }
-    //static associate(models) {
+    static associate(models) {
+        this.hasOne(models.Batch, { foreignKey: 'provider_id', as: 'batchs' })
     //    this.hasMany(models.Address, { foreignKey: 'user_id', as: 'addresses' })
     //    this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
-    //}
+    }
 }
 
 module.exports = Provider

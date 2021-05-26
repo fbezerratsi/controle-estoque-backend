@@ -21,6 +21,7 @@ class Medicine extends Model {
     static associate(models) {
         this.belongsTo(models.ActivePrinciple, { foreignKey: 'active_principle_id', as: 'active_principle' })
         this.belongsToMany(models.TherapeuticClass, { foreignKey: 'medicine_id', through: 'medicine_therap_classes', as: 'therapeutic_class' })
+        this.hasOne(models.Batch, { foreignKey: 'medicine_id', as: 'batchs' })
     }
 }
 

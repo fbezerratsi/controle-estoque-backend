@@ -2,22 +2,24 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('stocks', { 
-      stock_id: {
-        primaryKey: true,
+    return queryInterface.createTable('batch_for_stock', {
+      batch_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
-      },
-      name: {
-        type: Sequelize.STRING(70),
         allowNull: false,
-      },
-      address_id: {
-        type: Sequelize.UUID,
-        allowNull: true,
-        references: { model: 'addresses', key: 'address_id' },
+        references: { model: 'batchs', key: 'batch_id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+      },
+      stock_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: { model: 'stocks', key: 'stock_id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      amount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -31,6 +33,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('stocks');
+    return queryInterface.dropTable('batch_for_stock');
   }
 };

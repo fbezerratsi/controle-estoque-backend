@@ -16,7 +16,7 @@ class Stock extends Model {
     }
     static associate(models) {
         this.belongsTo(models.Address, { foreignKey: 'address_id', as: 'address' })
-        //this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
+        this.belongsToMany(models.Batch, { foreignKey: 'stock_id', through: 'batch_for_stock', as: 'batchs' })
     }
 }
 
