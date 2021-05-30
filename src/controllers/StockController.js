@@ -11,7 +11,15 @@ module.exports =  {
         const stock_id  = req.params.stock_id
         
         await Stock.findByPk(stock_id, {
-            include: { association: 'address' }
+            attributes: ['name'],
+            include: [
+                {
+                    model: Address,
+                    as: 'address',
+                    attributes: ['street','number','district','zipcode','state','city']
+                }
+            ]
+            //include: { association: 'address' }
         })
             .then(stock => res.json(stock))
             .catch(err => res.status(500).send(err))
@@ -37,24 +45,23 @@ module.exports =  {
         const { stock_id } = req.params
         const stock = await Stock.findByPk(stock_id)
 
-        const data = { ...req.body }
-        //const {...data}  = req.body
-
+        const {...data} = req.body
+        
         let newStock = validationStock(data)
         if (newStock.code) {
             res.json(newStock)
         } else {
-            /* await stock.update(data, {
-                include: ['address'],
+            
+            const s = await stock.update(data, {
+                include: ['address']
             })
-                .then(med => res.status(201).json(med)) */
-
-            const r = await stock.update(data)
                 
             await Address.update(data.address, {
-                where: { address_id: r.address_id }
+                where: { address_id: s.address_id }
             })
-                .then(stock => res.status(200).json(stock))
+                .then(_ => res.status(200).send(data))
+                .catch(erro => res.send(erro))
+            
             
         }
 
@@ -74,32 +81,6 @@ module.exports =  {
             })
                 .then(u => res.status(201).json(u))
         }
-
-        
-        
-        /* if (stock.stock_id) { // Atualizar um usuário no banco
-            await Stock.update(
-                stock,
-                { 
-                    include: { association: 'address' },
-                    where: { stock_id: stock.stock_id },
-                    returning: true
-                },
-            )
-                .then(u => {
-                    addressIdTheReturn = {...u[1]}[0].address_id
-                    Address.update(stock.address, {
-                        where: { address_id: addressIdTheReturn },
-                        returning: true
-                    })
-                    res.status(202).json({...u[1]}[0])
-                })
-                .then(a => res.status(202).json(a))
-                .catch(_ => res.status(500).send())
-
-        } */
-        
-        
 
     }
 }

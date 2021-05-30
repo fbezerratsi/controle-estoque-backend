@@ -5,10 +5,21 @@ function fieldSize(value, msg, size) {
     if (value.length > size) throw msg
 }
 
+function allocateStockError(batch, msg){
+    let AmountSum = 0
+    
+    batch.stocks.forEach(function(stock, i) {
+        AmountSum += stock['amount']
+    })
+    if (AmountSum > batch.total_amount) {
+        throw msg
+    }
+    
+}
+
 function validationBatch(batchBody) {
-    batchBody.total_amount = batchBody.total_amount.trim()
+    
     batchBody.batch_number = batchBody.batch_number.trim()
-    batchBody.total_amount = batchBody.total_amount.trim()
     batchBody.brand = batchBody.brand.trim()
     batchBody.arrival_date = batchBody.arrival_date.trim()
     batchBody.expiration_date = batchBody.expiration_date.trim()
@@ -16,6 +27,7 @@ function validationBatch(batchBody) {
     batchBody.provider_id = batchBody.provider_id.trim()
 
     try {
+        allocateStockError(batchBody, {"code": 412, "message": "Valor destinado ao estoque ultrapassa o limite do lote"})
         
         existsOrErro(batchBody.total_amount, {"code": 410, "message": "total amount field is mandatory"})
         existsOrErro(batchBody.remaining_amount, {"code": 410, "message": "remaining amount field is mandatory"})

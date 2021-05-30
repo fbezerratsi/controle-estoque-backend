@@ -3,6 +3,10 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('batch_for_stock', {
+      amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       batch_id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -16,10 +20,6 @@ module.exports = {
         references: { model: 'stocks', key: 'stock_id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-      },
-      amount: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
