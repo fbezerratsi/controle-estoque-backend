@@ -48,11 +48,11 @@ module.exports =  {
         
         if (active_principle.active_principle_id) { // Atualizar um usuário no banco
             await ActivePrinciple.update(active_principle, { where: { active_principle_id: active_principle.active_principle_id } })
-                .then(s => res.status(204).json({s}))
+                .then(s => res.status(204).json(s))
                 .catch(err => res.status(500).send(err))
         } else { // Inserir um usuário no banco
             await ActivePrinciple.create(active_principle)
-                .then(s => res.status(201).json({s}))
+                .then(s => res.status(201).json(s))
                 .catch(err => res.status(500).send(err))
         }
 
