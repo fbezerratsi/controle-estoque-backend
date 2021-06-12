@@ -9,12 +9,26 @@ function allocateStockError(batch, msg){
     let AmountSum = 0
     
     batch.stocks.forEach(function(stock, i) {
-        AmountSum += stock['amount']
+        if (Number.isInteger(stock['amount']) !== false)
+            AmountSum += stock['amount']
     })
     if (AmountSum > batch.total_amount) {
         throw msg
     }
     
+}
+
+function numericFieldStock(batch, msg) {
+    batch.stocks.forEach(function(stock, i) {
+        if (Number.isInteger(stock['amount']) === false) throw msg    
+    })
+    
+}
+
+function addZeroedStock(batch, msg) {
+    batch.stocks.forEach(function(stock, i) {
+        if (stock['amount'] === 0) throw msg
+    })
 }
 
 function validationBatch(batchBody) {
@@ -27,10 +41,11 @@ function validationBatch(batchBody) {
     batchBody.provider_id = batchBody.provider_id.trim()
 
     try {
-        allocateStockError(batchBody, {"code": 412, "message": "Valor destinado ao estoque ultrapassa o limite do lote"})
-        
+        allocateStockError(batchBody, {"code": 412, "message": "Value allocated to the stock exceeds the lot limit"})
+        addZeroedStock(batchBody, {"code": "015", "message": "The amount value cannot be zero"})
+        numericFieldStock(batchBody, {"code": "016", "message": "The amount cannot be of type string"})
+
         existsOrErro(batchBody.total_amount, {"code": 410, "message": "total amount field is mandatory"})
-        existsOrErro(batchBody.remaining_amount, {"code": 410, "message": "remaining amount field is mandatory"})
         existsOrErro(batchBody.batch_number, {"code": 410, "message": "batch_number field is mandatory"})
         existsOrErro(batchBody.brand, {"code": 410, "message": "brand field is mandatory"})
         existsOrErro(batchBody.arrival_date, {"code": 410, "message": "arrival date field is mandatory"})
@@ -43,7 +58,6 @@ function validationBatch(batchBody) {
         fieldSize(batchBody.ms_record, {"code": 411, "message": "supplier field must have a maximum of 13 characters."}, 13)
         
         numericField(batchBody.total_amount, {"code": 412, "message": "field accepts numbers only"})
-        numericField(batchBody.remaining_amount, {"code": 412, "message": "field accepts numbers only"})
         numericField(batchBody.batch_number, {"code": 412, "message": "field accepts numbers only"})
         
     } catch(msg) {

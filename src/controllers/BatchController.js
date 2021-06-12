@@ -1,7 +1,7 @@
 
 const Batch = require('../model/Batch')
 const Stock = require('../model/Stock')
-const BatchForStock = require('../model/BatchForStock.js')
+//const BatchForStock = require('../model/BatchForStock.js')
 const Provider = require('../model/Provider')
 const Medicine = require('../model/Medicine')
 const { validationBatch } = require('../validation/batchValidation');
@@ -11,33 +11,38 @@ module.exports =  {
 
     async getById(req, res) {
 
-        /* const medicine_id  = req.params.medicine_id
+        const batch_id  = req.params.batch_id
         
-        await Medicine.findOne({
-            attributes: { exclude: ['medicine_id', 'createdAt', 'updatedAt', 'active_principle_id'] },
+        await Batch.findOne({
+            attributes: { exclude: ['batch_id', 'createdAt', 'updatedAt', 'provider_id', 'medicine_id'] },
             include: [
                 {
-                    model: ActivePrinciple,
-                    as: 'active_principle',
+                    model: Provider,
+                    as: 'provider',
                     attributes: ['name']
                 },
                 {
-                    model: TherapeuticClass,
-                    as: 'therapeutic_class',
-                    through: { attributes: [] }
+                    model: Medicine,
+                    as: 'medicine',
+                    attributes: ['commercial_name']
                 },
+                {
+                    model: Stock,
+                    as: 'stocks',
+                    through: { attributes: ['amount'] }
+                }
             ],
             where: {
-                medicine_id,
+                batch_id,
             },
         })
-            .then(med => res.status(200).json(med))
-            .catch(err => res.status(500).send(err)) */
+            .then(bat => res.status(200).json(bat))
+            .catch(err => res.status(500).send(err))
 
     },
     async get(req, res) {
         await Batch.findAll({
-            attributes: { exclude: ['total_amount', 'remaining_amount', 'batch_number', 'brand', 'arrival_date', 'expiration_date', 'ms_record', 'createdAt', 'updatedAt', 'medicine_id', 'provider_id'] },
+            attributes: { exclude: ['brand', 'arrival_date', 'expiration_date', 'ms_record', 'createdAt', 'updatedAt', 'medicine_id', 'provider_id'] },
             include: [
                 {
                     model: Provider,
@@ -60,48 +65,55 @@ module.exports =  {
             .catch(err => res.status(500).send(err))
     },
     async edit(req, res) {
-        /* const { medicine_id } = req.params
-        const medicine = await Medicine.findByPk(medicine_id)
+        const { batch_id } = req.params
+        const batch = await Batch.findByPk(batch_id)
 
         const { ...data } = req.body
 
-        //res.json(data)
-
-        let newMedicine = validationMedicine(data, Medicine)
-        if (newMedicine.code) {
-            res.json(newMedicine)
-        } else {
-            
-            await medicine.update(data, {
-                include: ['active_principle'],
-            })
-            await medicine.setTherapeutic_class(data.therapeutic_class_id)
-                .then(med => res.status(201).json(med))
-        } */
-    },
-    async save(req, res) {
-        
-        const {...batch} = req.body
-        
-        let newBatch = validationBatch(batch)
-        
+        let newBatch = validationBatch(data)
         if (newBatch.code) {
             res.json(newBatch)
         } else {
             
-            const newBat = await Batch.create(batch, {
+            const newBatch = await batch.update(data, {
+                include: ['provider', 'medicine'],
+            })
+            data.stocks.forEach((stock, i) => {
+                
+                newBatch.setStocks(stock.stock_id, {
+                    through: { amount: stock['amount'] } 
+                })
+        
+            })
+            res.status(204).json(newBatch)
+            
+        }
+    },
+    async save(req, res) {
+        
+        let {...batch} = req.body
+        
+        let newBatch = validationBatch(batch)
+        
+        if (newBatch.code) {
+            res.status(400).json(newBatch)
+        } else {
+            batch = { remaining_amount: batch.total_amount, ...batch }
+            
+            const newBatch = await Batch.create(batch, {
                 include: ['provider', 'medicine']
             })
-            
-            batch.stocks.forEach(function(stock, i) {
+            let a = 0
+            batch.stocks.forEach((stock, i) => {
                 
-                newBat.decrement('remaining_amount', { by: stock['amount'] })
-                newBat.addStock(stock['stock_id'], {
+                newBatch.decrement('remaining_amount', { by: stock['amount'] })
+                
+                newBatch.addStock(stock['stock_id'], {
                     through: { amount: stock['amount'] } 
                 })
             })
-
-            res.status(200).send(newBat)
+            
+            res.status(201).send(newBatch)
         }
                       
     }
