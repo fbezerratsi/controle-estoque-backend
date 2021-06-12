@@ -20,7 +20,7 @@ const options = {
         },
         servers: [
             {
-                url: "https://controle-estoque-backend.herokuapp.com/api/v1"
+                url: "https://controleestoque-backend.herokuapp.com/api/v1"
             },
             {url: "http://localhost:3001/api/v1"}
         ]
