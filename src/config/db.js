@@ -22,6 +22,8 @@ const Batch = require('../model/Batch')
 Batch.init(sequelize)
 const BatchForStock = require('../model/BatchForStock.js')
 BatchForStock.init(sequelize)
+const Patient = require('../model/Patient')
+Patient.init(sequelize)
 
 
 Stock.associate(sequelize.models)
@@ -33,5 +35,6 @@ ActivePrinciple.associate(sequelize.models)
 Batch.associate(sequelize.models)
 Provider.associate(sequelize.models)
 //BatchForStock.associate(sequelize.models)
+Patient.associate(sequelize.models)
 
 module.exports = sequelize
